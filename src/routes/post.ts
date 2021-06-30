@@ -35,7 +35,8 @@ export async function getUserFeed(req: Request, res: Response){
 //takes in loginToken and timestamp in params
 export async function deletePost(req: Request, res: Response){
   try {
-    const post = await postDao.deletePost(req.params)
+    const {time ,user} = req.params
+    await postDao.deletePost(time, user);
     res.status(200).json('Post was successfully deleted');
   } catch(error){
     res.status(500).json({err:"something went wrong"})
