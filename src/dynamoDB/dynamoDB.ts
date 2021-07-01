@@ -2,12 +2,14 @@ import { DynamoDBDocumentClient} from "@aws-sdk/lib-dynamodb";
 
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 // Set the AWS Region.
-const REGION = process.env.AWS_DEFAULT_REGION; //e.g. "us-east-1"
+const REGION = process.env.AWS_DEFAULT_REGION; //e.g. "us-east-2"
+const KEY = process.env.AWS_ACCESS_KEY_ID;
+const SECRET_KEY = process.env.AWS_SECRET_ACCESS_KEY;
 // Create an Amazon DynamoDB service client object.
 
 const ddbClient = new DynamoDBClient({ region: REGION , 
-    credentials: {accessKeyId: process.env.AWS_ACCESS_KEY || "", secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || ""},},);
-
+    credentials: {accessKeyId: KEY || "", secretAccessKey: SECRET_KEY || ""},},);
+    
     const marshallOptions = {
         // Whether to automatically convert empty strings, blobs, and sets to `null`.
         convertEmptyValues: false, // false, by default.
