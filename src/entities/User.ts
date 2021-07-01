@@ -1,25 +1,40 @@
 export interface IUser {
-    id: number;
-    name: string;
-    email: string;
+    userName: string;
+    displayName: string;
+    loginToken?: string;
+    email?: string;
+    password?: string;
+    profileImg: string;
 }
 
-class User implements IUser {
+export class User implements IUser {
 
-    public id: number;
-    public name: string;
-    public email: string;
+    public userName: string;
+    public displayName: string;
+    public loginToken?: string;
+    public email?: string;
+    public password?: string;
+    public profileImg: string;
 
-    constructor(nameOrUser: string | IUser, email?: string, id?: number) {
-        if (typeof nameOrUser === 'string') {
-            this.name = nameOrUser;
-            this.email = email || '';
-            this.id = id || -1;
+    // eslint-disable-next-line max-len
+    constructor(userNameOrObject: string | any, displayName?: string, profileImg?: string, email?: string, loginToken?: string) {
+        if (typeof userNameOrObject == 'string') {
+            this.userName = userNameOrObject;
+            this.displayName = displayName || '';
+            this.profileImg = profileImg || '';
+            if (email) this.email = email;
+            if (loginToken) this.loginToken = loginToken;
         } else {
-            this.name = nameOrUser.name;
-            this.email = nameOrUser.email;
-            this.id = nameOrUser.id;
+            this.userName = userNameOrObject.userName;
+            this.displayName = userNameOrObject.displayName;
+            this.profileImg = userNameOrObject.profileImg;
+            if (userNameOrObject.email) this.email = userNameOrObject.email;
+            if (userNameOrObject.loginToken) this.loginToken = userNameOrObject.loginToken;
         }
+    }
+
+    public cleansed(): User {
+        return new User(this.userName, this.displayName, this.profileImg);
     }
 }
 
