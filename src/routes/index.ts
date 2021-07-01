@@ -1,16 +1,25 @@
 import { Router } from 'express';
-import { getAllUsers, addOneUser, updateOneUser, deleteOneUser } from './Users';
+import { createPost, deletePost, getGlobalFeed, getUserFeed } from './post';
+import { updateUser, deleteUser, createUser, getUser, authenticate } from './Users';
 
 
 // User-route
 const userRouter = Router();
-userRouter.get('/all', getAllUsers);
-userRouter.post('/add', addOneUser);
-userRouter.put('/update', updateOneUser);
-userRouter.delete('/delete/:id', deleteOneUser);
+userRouter.get('/:userName',getUser );
+userRouter.post('/', createUser);
+userRouter.post('/authenticate', authenticate);
+userRouter.put('/', updateUser);
+userRouter.delete('/', deleteUser);
 
+//Post-route
+const postRouter = Router();
+postRouter.get('/', getGlobalFeed );
+postRouter.get('/:userName', getUserFeed );
+postRouter.post('/',createPost );
+postRouter.delete('/', deletePost);
 
 // Export the base-router
 const baseRouter = Router();
 baseRouter.use('/users', userRouter);
+baseRouter.use('/posts', postRouter);
 export default baseRouter;
