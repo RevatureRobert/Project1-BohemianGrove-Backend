@@ -8,7 +8,8 @@ import {
     GetCommandOutput, 
     PutCommand, 
     PutCommandInput, 
-    PutCommandOutput, 
+    PutCommandOutput,
+    QueryCommand, 
     QueryCommandInput,
     UpdateCommand,
     UpdateCommandInput
@@ -16,7 +17,6 @@ import {
 import { ddbDocClient as dynamo } from 'src/dynamoDB/dynamoDB';
 import { v4 as uuid}  from 'uuid';
 import bcrypt from 'bcrypt';
-import { QueryCommand } from '@aws-sdk/client-dynamodb';
 
 const TABLE_NAME = "bg-users";
 
