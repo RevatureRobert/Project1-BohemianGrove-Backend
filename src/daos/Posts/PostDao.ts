@@ -1,6 +1,5 @@
 import { DeleteCommand, PutCommand, QueryCommandInput,QueryCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import  IPost  from "@entities/Post";
-import  IUser  from "@entities/User";
 import { ddbDocClient } from "src/dynamoDB/dynamoDB";
 
 const TABLE_NAME = 'bg-posts'
@@ -8,9 +7,9 @@ const TABLE_NAME = 'bg-posts'
 
 export interface IPostDao {
     getGlobalFeed: () => Promise<IPost[]>;
-    getUserFeed: (user: string) => Promise<IPost[]>;
+    getUserFeed: (name: string) => Promise<IPost[]>;
     createPost: (post: IPost) => Promise<IPost>;
-    deletePost: (time: number, user: string) => Promise<boolean>;
+    deletePost: (post: IPost) => Promise<boolean>;
 }
 
 class PostDao implements IPostDao{
@@ -36,12 +35,13 @@ class PostDao implements IPostDao{
           return feed;
     }
 
-    public async getUserFeed(user: string): Promise<IPost[]>{
+    public async getUserFeed(name: string): Promise<IPost[]>{
 
         const userFeed: IPost[] = [];
+     
         const params:QueryCommandInput = {
             TableName: TABLE_NAME,
-            ExpressionAttributeValues:{ ":userName":  user },
+            ExpressionAttributeValues:{ ":userName":  name },
             KeyConditionExpression: "userName = :userName"
         }
         try {
@@ -65,10 +65,10 @@ class PostDao implements IPostDao{
             TableName: TABLE_NAME,
               
             Item:{
-                userName: post.postUser,
+                userName: post.userName,
                 postTime: post.postTime,
                 displayName: post.displayName,
-                displayImg: post.displayImage,
+                displayImg: post.displayImg,
                 postBody: post.postBody,
                 postImg: post.postImg
             }
@@ -82,14 +82,14 @@ class PostDao implements IPostDao{
           }
     }
 
-    public async deletePost(time: number, user: string): Promise<boolean>{
+    public async deletePost(post: IPost): Promise<boolean>{
         
         const params = { 
             TableName: TABLE_NAME,
               
             Key:{
-                userName:user,
-                postTime:time
+                userName: post.userName,
+                postTime: post.postTime
             }
         }
         try {
