@@ -9,7 +9,6 @@ export async function createUser(req: Request, res: Response){
     try {
         const {user} = req.body;
         const target = await userDao.createUser(user)
-        res.status(200).json("You were successful!")
         res.status(200).json(target);
     } catch(error){
         res.status(500).json({err:"something went wrong"})
