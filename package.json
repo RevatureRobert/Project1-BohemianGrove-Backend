@@ -2,6 +2,10 @@
   "name": "bohemian-grove",
   "version": "0.0.1",
   "description": "A social media network for conspiracy theorists",
+  "moduleDirectories": [
+    "node_modules",
+    "src"
+  ],
   "scripts": {
     "build": "./node_modules/.bin/ts-node build.ts",
     "lint": "eslint . --ext .ts",
@@ -81,6 +85,10 @@
     "validator": "^13.6.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7",
+    "@babel/preset-typescript": "^7.14.5",
+    "@jest-mock/express": "^1.4.2",
     "@types/bcrypt": "^5.0.0",
     "@types/command-line-args": "^5.0.0",
     "@types/cookie-parser": "^1.4.2",
@@ -95,6 +103,7 @@
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.27.0",
     "@typescript-eslint/parser": "^4.27.0",
+    "babel-jest": "^27.0.6",
     "eslint": "^7.29.0",
     "eslint-config-google": "^0.14.0",
     "find": "^0.3.0",

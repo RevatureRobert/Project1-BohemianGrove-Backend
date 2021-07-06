@@ -1,4 +1,4 @@
-import User from '@entities/User';
+import User from '../entities/User';
 import { Request, Response } from 'express';
 import UserDao from '../daos/User/UserDao';
 

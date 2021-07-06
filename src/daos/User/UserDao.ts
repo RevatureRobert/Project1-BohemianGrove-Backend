@@ -1,5 +1,5 @@
-import { IUser, User } from '@entities/User';
-import Response from '@entities/Response'
+import { IUser, User } from '../../entities/User';
+import Response from '../../entities/Response'
 import { 
     DeleteCommand,
     DeleteCommandInput,
@@ -13,7 +13,7 @@ import {
     UpdateCommand,
     UpdateCommandInput
 } from '@aws-sdk/lib-dynamodb';
-import { ddbDocClient as dynamo } from 'src/dynamoDB/dynamoDB';
+import { ddbDocClient as dynamo } from '../../dynamoDB/dynamoDB';
 import { v4 as uuid}  from 'uuid';
 import bcrypt from 'bcrypt';
 import { QueryCommand } from '@aws-sdk/client-dynamodb';
