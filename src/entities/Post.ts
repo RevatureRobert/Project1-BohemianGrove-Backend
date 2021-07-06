@@ -1,30 +1,41 @@
 export interface IPost {
-    postUser: string;
+    userName: string;
     postTime: number;
     displayName: string
-    displayImage: string
+    displayImg: string
     postBody: string
     postImg: string
 }
 
 class Post implements IPost {
 
-    public postUser: string;
+    public userName: string;
     public postTime: number;
     public displayName: string
-    public displayImage: string
+    public displayImg: string
     public postBody: string
     public postImg: string
 
 
-    constructor(user: string, time: number, dName: string, dImage: string, body: string, pImage: string ) {
+    constructor(userOrPost: string| any, time?: number, dName?: string, dImage?: string, body?: string, pImage?: string) {
 
-        this.postUser = user;
-        this.postTime = time;
-        this.displayName = dName;
-        this.displayImage = dImage;
-        this.postBody = body;
-        this.postImg = pImage;
+        if(typeof userOrPost === "string"){
+            this.userName = userOrPost;
+            this.postTime = time || 0;
+            this.displayName = dName || "";
+            this.displayImg = dImage || "";
+            this.postBody = body || "";
+            this.postImg = pImage || "";
+            
+        }
+        else{
+            this.userName = userOrPost.postUser;
+            this.postTime = userOrPost.postTime;
+            this.displayName = userOrPost.displayName;
+            this.displayImg = userOrPost.dImage;
+            this.postBody = userOrPost.postBody;
+            this.postImg = userOrPost.postImage;
+        }
     }
 }
 
