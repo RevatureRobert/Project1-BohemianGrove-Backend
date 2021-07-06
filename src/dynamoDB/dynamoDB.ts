@@ -8,7 +8,7 @@ const REGION = process.env.AWS_DEFAULT_REGION; //e.g. "us-east-1"
 const ddbClient = new DynamoDBClient({ 
     region: REGION, 
     credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY || "", 
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID || "", 
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || ""
     }
 });
