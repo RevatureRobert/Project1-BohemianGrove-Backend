@@ -5,13 +5,26 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 const REGION = process.env.AWS_DEFAULT_REGION; //e.g. "us-east-1"
 // Create an Amazon DynamoDB service client object.
 
-const ddbClient = new DynamoDBClient({ 
+const productionConf = { 
     region: REGION, 
     credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY || "", 
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID || "", 
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || ""
     }
-});
+}
+
+const testConf = process.env.MOCK_DYNAMODB_ENDPOINT && {
+    endpoint: process.env.MOCK_DYNAMODB_ENDPOINT,
+    sslEnabled: false,
+    region: "local"
+}
+
+const dynamoConf = {
+    ...productionConf,
+    ...testConf
+}
+
+const ddbClient = new DynamoDBClient(dynamoConf);
 
 const marshallOptions = {
     // Whether to automatically convert empty strings, blobs, and sets to `null`.
