@@ -34,3 +34,7 @@ test('it should create a post', async() => {
   testPost.postTime = result;
   expect(checkPost.Item).toEqual(testPost)
 })
+
+test('it should get all posts for the global feed', async() => {
+  
+})
