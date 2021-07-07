@@ -103,8 +103,7 @@ class UserDao implements IUserDao {
         const userResponse = await dynamo.send(new GetCommand(params));
         if (!userResponse.Item) return new Response(false, "A user with that name was not found.");
 
-        const checkHash = await bcrypt.hash(password, 10);
-        const success = await bcrypt.compare(userResponse.Item.password, checkHash);
+        const success = await bcrypt.compare(password, userResponse.Item.password);
 
         if (success) return new Response(true, new User(userResponse.Item));
 
