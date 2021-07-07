@@ -1,6 +1,6 @@
 import PostDao from "../../daos/Posts/PostDao";
 import { ddbDocClient as dynamo } from "../..//dynamoDB/dynamoDB";
-import { DeleteCommand, PutCommand, GetCommand ,QueryCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
+import {PutCommand, GetCommand ,QueryCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
 
 afterAll(() => {
   dynamo.destroy();
