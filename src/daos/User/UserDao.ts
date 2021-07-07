@@ -1,21 +1,21 @@
 import { IUser, User } from '../../entities/User';
 import Response from '../../entities/Response'
-import { 
+import {
     DeleteCommand,
     DeleteCommandInput,
-    GetCommand, 
-    GetCommandInput, 
-    GetCommandOutput, 
-    PutCommand, 
-    PutCommandInput, 
+    GetCommand,
+    GetCommandInput,
+    GetCommandOutput,
+    PutCommand,
+    PutCommandInput,
     PutCommandOutput,
-    QueryCommand, 
+    QueryCommand,
     QueryCommandInput,
     UpdateCommand,
     UpdateCommandInput
 } from '@aws-sdk/lib-dynamodb';
 import { ddbDocClient as dynamo } from '../../dynamoDB/dynamoDB';
-import { v4 as uuid}  from 'uuid';
+import { v4 as uuid } from 'uuid';
 import bcrypt from 'bcrypt';
 
 const TABLE_NAME = "bg-users";
@@ -30,8 +30,8 @@ export interface IUserDao {
 }
 
 class UserDao implements IUserDao {
-    
-    
+
+
     /**
      * Creates a new user from a user object.
      * 
@@ -39,23 +39,27 @@ class UserDao implements IUserDao {
      * @returns a response object containing a full user object.
      */
     public async createUser(user: IUser): Promise<Response> {
-        const newToken = uuid();
-        user.loginToken = newToken;
+        try {
+            const newToken = uuid();
+            user.loginToken = newToken;
 
-        if (!user.password) return new Response(false, 'User did not provide a password.');
+            if (!user.password) return new Response(false, 'User did not provide a password.');
 
-        const passwordHash = await bcrypt.hash(user.password, 10);
-        user.password = passwordHash;
-        
-        const params: PutCommandInput = {
-            TableName: TABLE_NAME,
-            Item: user,
-            ReturnValues: "ALL_NEW"
+            const passwordHash = await bcrypt.hash(user.password, 10);
+            user.password = passwordHash;
+
+            const params: PutCommandInput = {
+                TableName: TABLE_NAME,
+                Item: user,
+                ReturnValues: "ALL_NEW"
+            }
+
+            const result: PutCommandOutput = await dynamo.send(new PutCommand(params));
+
+            return new Response(true, new User(result.Attributes));
+        } catch (err) {
+            return new Response(false, err);
         }
-
-        const result: PutCommandOutput = await dynamo.send(new PutCommand(params));
-
-        return new Response(true, new User(result.Attributes));
     }
 
 
@@ -95,7 +99,7 @@ class UserDao implements IUserDao {
                 userName
             }
         }
-        
+
         const userResponse = await dynamo.send(new GetCommand(params));
         if (!userResponse.Item) return new Response(false, "A user with that name was not found.");
 
@@ -122,8 +126,8 @@ class UserDao implements IUserDao {
         const updatedUser = new User({
             ...tokenCheck.data,
             ...user
-        }); 
-        
+        });
+
         const params: UpdateCommandInput = {
             TableName: TABLE_NAME,
             Key: {
