@@ -1,6 +1,7 @@
 import PostDao from "../../daos/Posts/PostDao";
 import { ddbDocClient as dynamo } from "../..//dynamoDB/dynamoDB";
 import {PutCommand, GetCommand ,QueryCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
+import Post from "../../entities/Post";
 
 afterAll(() => {
   dynamo.destroy();
@@ -9,7 +10,7 @@ afterAll(() => {
 const postDao = new PostDao();
 const TABLENAME = "bg-posts";
 
-const testPost = {
+const testPost1 = {
   userName: "admin",
   postTime: Date.now(),
   displayName: "captain",
@@ -27,12 +28,11 @@ const testPostInDB = {
   postImg: "captainHat.png"
 }
 
-const {userName} = testPost;
+const {userName} = testPost1;
 const {postTime} = testPostInDB;
 
 test('it should create a post', async() => {
-  const result = await postDao.createPost(testPost);
-
+  const result = await postDao.createPost(testPost1);
   const params = {
     TableName: TABLENAME,
     Key: {
@@ -42,11 +42,20 @@ test('it should create a post', async() => {
   }
 
   const checkPost = await dynamo.send(new GetCommand(params));
-  testPost.postTime = result;
-  expect(checkPost.Item).toEqual(testPost)
+  testPost1.postTime = result;
+
+  const post = new Post(testPost1);
+  expect(checkPost.Item).toEqual(post);
 })
 
 test('it should get all posts for the global feed', async() => {
+  const putParams = {
+    TableName: TABLENAME,
+    Item: testPostInDB
+  }
+
+  await dynamo.send(new PutCommand(putParams))
+
   const result = await postDao.getGlobalFeed();
 
   const params = {
