@@ -53,7 +53,6 @@ export async function deleteUser(req: Request, res: Response){
     try {
         const {loginToken} = req.params
         const profile = await userDao.deleteUser(loginToken);
-        res.status(200).json(`User ${req.params.displayName} was successfully deleted`);
         res.status(200).json(profile);
     } catch(error){
         res.status(500).json({err:"something went wrong"})

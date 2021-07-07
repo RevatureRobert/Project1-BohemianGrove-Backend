@@ -52,7 +52,7 @@ class UserDao implements IUserDao {
                 TableName: TABLE_NAME,
                 Item: user,
             }
-            
+
             const result: PutCommandOutput = await dynamo.send(new PutCommand(params));
 
             user.password = undefined;
@@ -134,12 +134,11 @@ class UserDao implements IUserDao {
                 userName: tokenCheck.data.userName
             },
             ExpressionAttributeValues: {
-                ":u": updatedUser.userName,
                 ":d": updatedUser.displayName,
                 ":e": updatedUser.email,
                 ":i": updatedUser.profileImg
             },
-            UpdateExpression: "userName = :u, displayName = :d, email = :e, profileImg = :i",
+            UpdateExpression: "SET displayName = :d, email = :e, profileImg = :i",
             ReturnValues: "ALL_NEW"
         }
 
@@ -183,6 +182,7 @@ class UserDao implements IUserDao {
     public async checkToken(loginToken: string): Promise<Response> {
         const params: QueryCommandInput = {
             TableName: TABLE_NAME,
+            IndexName: "loginToken-index",
             ExpressionAttributeValues: {
                 ":token": loginToken
             },
@@ -194,7 +194,7 @@ class UserDao implements IUserDao {
         if (!result.Count || !result.Items) return new Response(false, "Invalid login token.");
         if (result.Count > 1) return new Response(false, "Duplicate tokens exist in the databse.");
 
-        return new Response(true, new User(result.Items));
+        return new Response(true, new User(result.Items[0]));
     }
 }
 
