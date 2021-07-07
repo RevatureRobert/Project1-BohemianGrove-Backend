@@ -8,7 +8,6 @@ import {
     GetCommandOutput,
     PutCommand,
     PutCommandInput,
-    PutCommandOutput,
     QueryCommand,
     QueryCommandInput,
     UpdateCommand,
@@ -51,13 +50,19 @@ class UserDao implements IUserDao {
             const params: PutCommandInput = {
                 TableName: TABLE_NAME,
                 Item: user,
+                ExpressionAttributeNames: {
+                    "#U": "userName"
+                },
+                ConditionExpression: "attribute_not_exists(#U)"
             }
 
-            const result: PutCommandOutput = await dynamo.send(new PutCommand(params));
+            await dynamo.send(new PutCommand(params));
 
             user.password = undefined;
             return new Response(true, user);
         } catch (err) {
+            if (err.name == "ConditionalCheckFailedException") 
+                return new Response(false, "A user with that name already exists.");
             return new Response(false, err);
         }
     }
