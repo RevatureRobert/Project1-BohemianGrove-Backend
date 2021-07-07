@@ -1,6 +1,6 @@
 import { DeleteCommand, PutCommand, QueryCommandInput,QueryCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
-import  IPost  from "@entities/Post";
-import { ddbDocClient } from "src/dynamoDB/dynamoDB";
+import  IPost  from "../../entities/Post";
+import { ddbDocClient } from "../../dynamoDB/dynamoDB";
 
 const TABLE_NAME = 'bg-posts'
 
@@ -61,12 +61,13 @@ class PostDao implements IPostDao{
     }
     
     public async createPost(post: IPost): Promise<any>{
+        const time = Date.now();
         const params = { 
             TableName: TABLE_NAME,
-              
+            
             Item:{
                 userName: post.userName,
-                postTime: Date.now(),
+                postTime: time,
                 displayName: post.displayName,
                 displayImg: post.displayImg,
                 postBody: post.postBody,
@@ -76,7 +77,7 @@ class PostDao implements IPostDao{
         try {
             const data = await ddbDocClient.send(new PutCommand(params));
             console.log("Success - item added or updated", data);
-            return data;
+            return time;
           } catch (err) {
             console.log("Error", err);
           }

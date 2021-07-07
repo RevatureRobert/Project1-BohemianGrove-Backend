@@ -1,8 +1,11 @@
-export default {
+module.exports = {
   tables: [
     {
       TableName: "bg-posts",
-      KeySchema: [{ AttributeName: "userName", KeyType: "HASH" }],
+      KeySchema: [
+        {AttributeName: "userName", KeyType: "HASH"},
+        {AttributeName: "postTime", KeyType:"RANGE"}
+      ],
       AttributeDefinitions: [
         { AttributeName: "userName", AttributeType: "S" },
         { AttributeName: "postTime", AttributeType: "N" }
