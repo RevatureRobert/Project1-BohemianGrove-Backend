@@ -1,10 +1,10 @@
-module.exports = {
-  preset: "jest-dynalite",
-  moduleFileExtensions: [
-    "js",
-    "ts",
-    "json",
-    "node"
-  ],
-  setupFiles: ['dotenv/config']
-};
+// module.exports = {
+//   preset: "jest-dynalite",
+//   moduleFileExtensions: [
+//     "js",
+//     "ts",
+//     "json",
+//     "node"
+//   ],
+//   setupFiles: ['dotenv/config']
+// };
