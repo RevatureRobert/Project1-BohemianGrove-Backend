@@ -1,4 +1,4 @@
-import User from '@entities/User';
+import User from '../entities/User';
 import { Request, Response } from 'express';
 import UserDao from '../daos/User/UserDao';
 
@@ -9,10 +9,9 @@ export async function createUser(req: Request, res: Response){
     try {
         const {user} = req.body;
         const target = await userDao.createUser(user)
-        res.status(200).json("You were successful!")
         res.status(200).json(target);
     } catch(error){
-        res.status(500).json({err:"something went wrong"})
+        res.status(500).json({err:error})
     }
 }
 
@@ -29,7 +28,7 @@ export async function getUser(req: Request, res: Response){
 
 export async function authenticate(req: Request, res: Response){
     try {
-        const {userName, password} = req.params;
+        const {userName, password} = req.body;
         const user = await userDao.authenticate(userName, password);
         res.status(200).json(user);
     } catch(error){
@@ -40,12 +39,13 @@ export async function authenticate(req: Request, res: Response){
 
 export async function updateUser(req: Request, res: Response){
     try {
-        const {user} = req.body;
-        const target = await userDao.updateUser(user.loginToken || '', new User(user))
-        res.status(200).json("You were successful!")
+        console.log(req.body);
+        const {user, loginToken} = req.body;
+        const target = await userDao.updateUser(loginToken, new User(user))
         res.status(200).json(target);
     } catch(error){
-        res.status(500).json({err:"something went wrong"})
+        console.log(error);
+        res.status(500).json({err:error})
     }
 }
 

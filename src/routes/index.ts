@@ -9,7 +9,7 @@ userRouter.get('/:userName',getUser );
 userRouter.post('/', createUser);
 userRouter.post('/authenticate', authenticate);
 userRouter.put('/', updateUser);
-userRouter.delete('/', deleteUser);
+userRouter.delete('/:loginToken', deleteUser);
 
 //Post-route
 const postRouter = Router();

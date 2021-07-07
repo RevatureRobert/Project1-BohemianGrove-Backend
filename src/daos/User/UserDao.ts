@@ -1,5 +1,5 @@
-import { IUser, User } from '@entities/User';
-import Response from '@entities/Response'
+import { IUser, User } from '../../entities/User';
+import Response from '../../entities/Response'
 import { 
     DeleteCommand,
     DeleteCommandInput,
@@ -14,7 +14,7 @@ import {
     UpdateCommand,
     UpdateCommandInput
 } from '@aws-sdk/lib-dynamodb';
-import { ddbDocClient as dynamo } from 'src/dynamoDB/dynamoDB';
+import { ddbDocClient as dynamo } from '../../dynamoDB/dynamoDB';
 import { v4 as uuid}  from 'uuid';
 import bcrypt from 'bcrypt';
 
@@ -190,7 +190,7 @@ class UserDao implements IUserDao {
         if (!result.Count || !result.Items) return new Response(false, "Invalid login token.");
         if (result.Count > 1) return new Response(false, "Duplicate tokens exist in the databse.");
 
-        return new Response(true, new User(result.Items[0]));
+        return new Response(true, new User(result.Items));
     }
 }
 
