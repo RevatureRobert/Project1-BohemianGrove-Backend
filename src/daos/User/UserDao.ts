@@ -123,7 +123,7 @@ class UserDao implements IUserDao {
      * @param user 
      * @returns a response object containing the full updated user object.
      */
-    public async updateUser(loginToken: string, user: User): Promise<Response> {
+    public async updateUser(loginToken: string, user: IUser): Promise<Response> {
         const tokenCheck = await this.checkToken(loginToken);
         if (!tokenCheck.success) return tokenCheck;
 
