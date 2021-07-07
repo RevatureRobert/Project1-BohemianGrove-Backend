@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import PostDao from '../daos/Posts/PostDao';
-import IPost from "@entities/Post"
 
 //names and imports may not be finalized yet from PostDao- kai 
 const postDao = new PostDao();
@@ -18,7 +17,6 @@ export async function createPost(req: Request, res: Response){
   try {
     const {post} = req.body;
     const newPost = await postDao.createPost(post);
-    res.status(200).json("You were successful in adding the post!");
   } catch(error){
     res.status(500).json({err:"something went wrong"})
   }

@@ -190,7 +190,7 @@ class UserDao implements IUserDao {
         if (!result.Count || !result.Items) return new Response(false, "Invalid login token.");
         if (result.Count > 1) return new Response(false, "Duplicate tokens exist in the databse.");
 
-        return new Response(true, new User(result.Items[0]));
+        return new Response(true, new User(result.Items));
     }
 }
 

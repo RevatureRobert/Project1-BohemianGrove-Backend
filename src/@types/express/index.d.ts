@@ -6,6 +6,9 @@ declare module 'express' {
         body: {
             post: IPost
             user: IUser 
+            userName: string
+            password: string
+            loginToken: string
         };
     }
 }
