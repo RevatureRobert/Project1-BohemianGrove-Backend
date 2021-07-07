@@ -17,6 +17,7 @@ export async function createPost(req: Request, res: Response){
   try {
     const {post} = req.body;
     const newPost = await postDao.createPost(post);
+    res.status(201).json(newPost);
   } catch(error){
     res.status(500).json({err:"something went wrong"})
   }

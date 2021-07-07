@@ -51,12 +51,12 @@ class UserDao implements IUserDao {
             const params: PutCommandInput = {
                 TableName: TABLE_NAME,
                 Item: user,
-                ReturnValues: "ALL_NEW"
             }
-
+            
             const result: PutCommandOutput = await dynamo.send(new PutCommand(params));
 
-            return new Response(true, new User(result.Attributes));
+            user.password = undefined;
+            return new Response(true, user);
         } catch (err) {
             return new Response(false, err);
         }

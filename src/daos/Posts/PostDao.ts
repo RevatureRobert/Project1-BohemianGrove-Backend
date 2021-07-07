@@ -66,7 +66,7 @@ class PostDao implements IPostDao{
               
             Item:{
                 userName: post.userName,
-                postTime: post.postTime,
+                postTime: Date.now(),
                 displayName: post.displayName,
                 displayImg: post.displayImg,
                 postBody: post.postBody,
