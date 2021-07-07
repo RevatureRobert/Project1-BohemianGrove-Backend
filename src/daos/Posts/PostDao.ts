@@ -76,7 +76,7 @@ class PostDao implements IPostDao{
         }
         try {
             const data = await ddbDocClient.send(new PutCommand(params));
-            console.log("Success - item added or updated", data);
+            console.log("Success - item added or updated");
             return time;
           } catch (err) {
             console.log("Error", err);
