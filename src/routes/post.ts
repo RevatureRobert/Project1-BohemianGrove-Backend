@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import PostDao from '../daos/Posts/PostDao';
 
-//names and imports may not be finalized yet from PostDao- kai 
 const postDao = new PostDao();
 
 export async function getGlobalFeed(req: Request, res: Response){
@@ -27,7 +26,6 @@ export async function getUserFeed(req: Request, res: Response){
   try {
     const {userName} =  req.params;
     const posts = await postDao.getUserFeed(userName);
-    console.log(req.body, req.params);
     res.status(200).json(posts);
   } catch (err){
     res.status(500).json({err: "something went wrong"})
