@@ -14,6 +14,12 @@ export interface IPostDao {
 
 class PostDao implements IPostDao{
 
+
+     /**
+     * Gets the global feed from the database.
+     * 
+     * @returns an array of Post objects.
+     */
     public async getGlobalFeed(): Promise<Post[]> {
         const params = {
             TableName: TABLE_NAME
@@ -26,7 +32,12 @@ class PostDao implements IPostDao{
             throw(err);
         } 
     }
-
+    
+     /**
+     * Gets all of the posts from a specific user from the database.
+     * @param {string} name - The users name.
+     * @returns an array of Post objects.
+     */
     public async getUserFeed(name: string): Promise<Post[]>{
 
         const userFeed: Post[] = [];
@@ -44,7 +55,12 @@ class PostDao implements IPostDao{
         } 
         
     }
-    
+     /**
+     * Creates a new post from a post object.
+     * 
+     * @param {IPost} post - The post object to create 
+     * @returns the post time of the object.
+     */
     public async createPost(post: IPost): Promise<any>{
         const time = Date.now();
         const params = { 
@@ -66,6 +82,13 @@ class PostDao implements IPostDao{
             throw(err);
         }
     }
+
+     /**
+     * Delete a post from the database.
+     * 
+     * @param {Post} post - post object to delte
+     * @returns true if it deletes the post, false if not.
+     */
 
     public async deletePost(post: Post): Promise<boolean>{
         
