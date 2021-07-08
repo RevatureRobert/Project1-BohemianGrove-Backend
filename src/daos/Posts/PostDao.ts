@@ -42,8 +42,9 @@ class PostDao implements IPostDao{
             return data.Items as Post[];
         } catch (err) {
             console.log("Error", err);
+            throw(err);
         } 
-        return userFeed;
+        
     }
     
     public async createPost(post: IPost): Promise<any>{
@@ -81,7 +82,7 @@ class PostDao implements IPostDao{
         }
         try {
             const data = await ddbDocClient.send(new DeleteCommand(params));
-            console.log("Success - item deleted", data);
+            console.log("Success - item deleted");
             return true;
         } catch (err) {
             console.log("Error", err);
