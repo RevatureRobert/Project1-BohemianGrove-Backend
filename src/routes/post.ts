@@ -26,7 +26,8 @@ export async function createPost(req: Request, res: Response){
 export async function getUserFeed(req: Request, res: Response){
   try {
     const {userName} =  req.params;
-    const posts = await postDao.getUserFeed(String(userName));
+    const posts = await postDao.getUserFeed(userName);
+    console.log(req.body, req.params);
     res.status(200).json(posts);
   } catch (err){
     res.status(500).json({err: "something went wrong"})
@@ -37,7 +38,6 @@ export async function getUserFeed(req: Request, res: Response){
 export async function deletePost(req: Request, res: Response){
   try {
     const {post} = req.body;
-    console.log(post);
     await postDao.deletePost(post);
     res.status(200).json('Post was successfully deleted');
   } catch(error){

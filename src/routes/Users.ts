@@ -21,7 +21,6 @@ export async function getUser(req: Request, res: Response){
         const user = await userDao.getUser(userName);
         res.status(200).json(user);
     } catch(error){
-        console.error(error);
         res.status(500).json({err:"something went wrong"})
     }
 } 
@@ -32,19 +31,16 @@ export async function authenticate(req: Request, res: Response){
         const user = await userDao.authenticate(userName, password);
         res.status(200).json(user);
     } catch(error){
-        console.error(error);
         res.status(500).json({err:"something went wrong"})
     }
 }
 
 export async function updateUser(req: Request, res: Response){
     try {
-        console.log(req.body);
         const {user, loginToken} = req.body;
         const target = await userDao.updateUser(loginToken, new User(user))
         res.status(200).json(target);
     } catch(error){
-        console.log(error);
         res.status(500).json({err:error})
     }
 }
