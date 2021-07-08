@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 import { DeleteCommand, PutCommand, QueryCommandInput,QueryCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import  {Post, IPost}  from "../../entities/Post";
 import { ddbDocClient } from "../../dynamoDB/dynamoDB";

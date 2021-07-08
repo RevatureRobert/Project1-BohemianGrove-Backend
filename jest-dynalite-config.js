@@ -20,7 +20,8 @@ module.exports = {
       KeySchema: [{ AttributeName: "userName", KeyType: "HASH" }],
       AttributeDefinitions: [
               { AttributeName: "userName", AttributeType: "S" },
-              { AttributeName: "loginToken", AttributeType: "S" }
+              { AttributeName: "loginToken", AttributeType: "S" },
+              { AttributeName: "displayName", AttributeType: "S" } 
             ],
       GlobalSecondaryIndexes: [
         {
@@ -38,6 +39,22 @@ module.exports = {
             ReadCapacityUnits: 1,
             WriteCapacityUnits: 1,
           },
+        },
+        {
+          IndexName: "displayName-index",
+          KeySchema: [
+            {
+              AttributeName: "displayName",
+              KeyType: "HASH"
+            }
+          ],
+          Projection: {
+            ProjectionType: "ALL"
+          },
+          ProvisionedThroughput: {
+            ReadCapacityUnits: 1,
+            WriteCapacityUnits: 1
+          }
         }
       ],
       ProvisionedThroughput: {

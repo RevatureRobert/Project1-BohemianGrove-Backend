@@ -10,6 +10,8 @@ import {
     PutCommandInput,
     QueryCommand,
     QueryCommandInput,
+    ScanCommand,
+    ScanCommandInput,
     UpdateCommand,
     UpdateCommandInput
 } from '@aws-sdk/lib-dynamodb';
@@ -22,6 +24,7 @@ const TABLE_NAME = "bg-users";
 export interface IUserDao {
     createUser: (user: IUser) => Promise<Response>;
     getUser: (userName: string) => Promise<Response>;
+    searchUsers: (search: string) => Promise<Response>;
     authenticate: (userName: string, password: string) => Promise<Response>;
     updateUser: (loginToken: string, user: User) => Promise<Response>;
     deleteUser: (loginToken: string) => Promise<Response>;
@@ -87,6 +90,40 @@ class UserDao implements IUserDao {
         if (!result.Item) return new Response(false, "A user with that name was not found.");
 
         return new Response(true, new User(result.Item).cleansed());
+    }
+
+
+    /**
+     * Gets a list of users that match the search term.
+     * 
+     * @param search 
+     * @returns a response object containing an array of cleansed user objects.
+     */
+    public async searchUsers(search: string): Promise<Response> {
+        if (!search) return new Response(false, "A search term was not provided.");
+        
+        const results: User[] = []
+        
+        // Check if the search term matches a username        
+        const user = await this.getUser(search);
+        if (user.success) results.push(new User(user.data).cleansed());
+
+        // Find all users with similar display names
+        const params: ScanCommandInput = {
+            TableName: TABLE_NAME,
+            IndexName: "displayName-index",
+            ExpressionAttributeValues: {
+                ":s": search
+            },
+            FilterExpression: "contains(displayName, :s)"
+        }
+        const result = await dynamo.send(new ScanCommand(params));
+        if (result.Items) for (const item of result.Items) {
+            results.push(new User(item).cleansed());
+        }
+
+        // Return all users
+        return new Response(true, results);
     }
 
 

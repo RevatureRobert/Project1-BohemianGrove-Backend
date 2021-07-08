@@ -72,7 +72,6 @@ export async function updateUser(req: Request, res: Response){
  * 
  * @param res @param req 
  */
-
 export async function deleteUser(req: Request, res: Response){
     try {
         const {loginToken} = req.params
@@ -81,6 +80,23 @@ export async function deleteUser(req: Request, res: Response){
         else res.status(400).json(profile);
     } catch(error){
         res.status(400).json({err:"something went wrong"})
+    }
+}
+
+/**
+ * Route to search for users. Calls the UserDao to search for users.
+ * 
+ * @param req 
+ * @param res 
+ */
+export async function searchUser(req: Request, res: Response){
+    try {
+        const { search } = req.params;
+        const results = await userDao.searchUsers(search);
+        if (results.success) res.status(200).json(results);
+        else res.status(400).json(results);
+    } catch (err) {
+        res.status(400).json({err});
     }
 }
 

@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import PostDao from '../daos/Posts/PostDao';
-import IPost from "@entities/Post"
 
 
 const postDao = new PostDao();
@@ -28,6 +27,7 @@ export async function createPost(req: Request, res: Response){
   try {
     const {post} = req.body;
     const newPost = await postDao.createPost(post);
+    res.status(201).json(newPost); 
   } catch(error){
     res.status(500).json({err:"something went wrong"})
   }
@@ -41,7 +41,8 @@ export async function createPost(req: Request, res: Response){
 export async function getUserFeed(req: Request, res: Response){
   try {
     const {userName} =  req.params;
-    const posts = await postDao.getUserFeed(String(userName));
+    const posts = await postDao.getUserFeed((userName));
+    res.status(200).json(posts); 
   } catch (err){
     res.status(500).json({err: "something went wrong"})
   }

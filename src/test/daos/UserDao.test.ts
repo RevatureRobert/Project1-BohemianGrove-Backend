@@ -178,3 +178,31 @@ test('Authenticate user', async () => {
     expect(result.data).toBeTruthy();
     expect(result.data).toEqual(userToCheckAgainst);
 });
+
+
+
+test('Search for a user', async () => {
+    // Setup test
+    await dynamo.send(new PutCommand({
+        TableName: "bg-users",
+        Item: testUserInDB
+    }));
+
+    // Run the dao
+    const result1 = await userDao.searchUsers("NewUser");
+    const result2 = await userDao.searchUsers("New");
+    const result3 = await userDao.searchUsers("Jeff");
+
+    // Check the result
+    expect(result1.success).toBeTruthy();
+    expect(result1.data).toBeTruthy();
+    expect(result1.data.length).toBe(1);
+
+    expect(result2.success).toBeTruthy();
+    expect(result2.data).toBeTruthy();
+    expect(result2.data.length).toBe(1);
+
+    expect(result3.success).toBeTruthy();
+    expect(result3.data).toEqual([]);
+    expect(result3.data.length).toBe(0);
+});
