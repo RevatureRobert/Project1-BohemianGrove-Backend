@@ -23,8 +23,7 @@ class PostDao implements IPostDao{
             const data = await ddbDocClient.send(new ScanCommand(params));
             return data.Items as Post[];
         } catch (err) {
-            console.log("Error", err);
-            return feed;
+            throw(err);
         } 
     }
 
@@ -41,7 +40,6 @@ class PostDao implements IPostDao{
             const data = await ddbDocClient.send(new QueryCommand(params));
             return data.Items as Post[];
         } catch (err) {
-            console.log("Error", err);
             throw(err);
         } 
         
@@ -63,10 +61,9 @@ class PostDao implements IPostDao{
         }
         try {
             const data = await ddbDocClient.send(new PutCommand(params));
-            console.log("Success - item added or updated");
             return time;
         } catch (err) {
-            console.log("Error", err);
+            throw(err);
         }
     }
 
@@ -82,10 +79,8 @@ class PostDao implements IPostDao{
         }
         try {
             const data = await ddbDocClient.send(new DeleteCommand(params));
-            console.log("Success - item deleted");
             return true;
         } catch (err) {
-            console.log("Error", err);
             return false;
         }
     }
