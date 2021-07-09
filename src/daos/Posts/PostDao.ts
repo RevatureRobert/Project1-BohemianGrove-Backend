@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-useless-catch */
 import { DeleteCommand, PutCommand, QueryCommandInput,QueryCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import  {Post, IPost}  from "../../entities/Post";
@@ -28,7 +29,11 @@ class PostDao implements IPostDao{
         let feed: Post[] = [];
         try {
             const data = await ddbDocClient.send(new ScanCommand(params));
-            return data.Items as Post[];
+            feed = data.Items as Post[];
+            feed.sort((a, b) => {
+                return b.postTime - a.postTime;
+            });
+            return feed;
         } catch (err) {
             throw(err);
         } 
@@ -41,7 +46,7 @@ class PostDao implements IPostDao{
      */
     public async getUserFeed(name: string): Promise<Post[]>{
 
-        const userFeed: Post[] = [];
+        let userFeed: Post[] = [];
     
         const params:QueryCommandInput = {
             TableName: TABLE_NAME,
@@ -50,7 +55,11 @@ class PostDao implements IPostDao{
         }
         try {
             const data = await ddbDocClient.send(new QueryCommand(params));
-            return data.Items as Post[];
+            userFeed = data.Items as Post[];
+            userFeed.sort((a, b) => {
+                return b.postTime - a.postTime;
+            });
+            return userFeed;
         } catch (err) {
             throw(err);
         } 
