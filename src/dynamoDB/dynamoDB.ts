@@ -20,7 +20,6 @@ const testConf = process.env.MOCK_DYNAMODB_ENDPOINT && {
 }
 
 const dynamoConf = {
-    ...productionConf,
     ...testConf
 }
 
