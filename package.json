@@ -69,6 +69,7 @@
     "@aws-sdk/client-dynamodb": "^3.19.0",
     "@aws-sdk/client-s3": "^3.19.0",
     "@aws-sdk/lib-dynamodb": "^3.19.0",
+    "@aws-sdk/util-dynamodb": "^3.21.0",
     "bcrypt": "^5.0.1",
     "command-line-args": "^5.1.1",
     "cookie-parser": "^1.4.5",
