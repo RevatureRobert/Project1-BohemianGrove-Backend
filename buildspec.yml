@@ -12,3 +12,4 @@ artifacts:
         - package-lock.json
         - 'dist/**/*'
         - README.md
+        - .npmrc
